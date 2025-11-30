@@ -41,7 +41,7 @@ begin
       regE      <= '1';
       registerT := (others => 'U');
       bufferT   := (others => 'U');
-      compteur  := 8;
+      compteur  := 9;
       state     <= IDLE;
     elsif (rising_edge(clk)) then
       case state is
@@ -54,7 +54,7 @@ begin
           end if;
         when INIT =>
           -- Etat intermediaire de recuperation/preparation des donnees.
-          compteur  := 8;
+          compteur  := 9;
           registerT := bufferT;
           bufE_i    <= '1';
           regE      <= '0';
@@ -69,8 +69,8 @@ begin
 
           -- Ordre de transmission.
           if (enable = '1') then
-            if (compteur >= 0) then
-              txd      <= registerT(compteur);
+            if (compteur > 0) then
+              txd      <= registerT(compteur - 1);
               compteur := compteur - 1;
             else
               regE     <= '1';
