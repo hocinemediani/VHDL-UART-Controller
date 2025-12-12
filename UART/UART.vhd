@@ -81,8 +81,7 @@ architecture UARTunit_arch of UARTunit is
         clk => clk,
         reset => reset,
         enableTX => enableTX,
-        enableRX => enableRX
-      );
+        enableRX => enableRX);
 
     txUnitInst : TxUnit
       port map (
@@ -93,36 +92,33 @@ architecture UARTunit_arch of UARTunit is
         txd => TxD,
         regE => regE,
         bufE => bufE,
-        data => data_in
-      );
+        data => data_in);
 
-      rxUnitInst : RxUnit
-        port map (
-          clk => clk,
-          reset => reset,
-          enable => enableRX,
-          read => lecture,
-          rxd => RxD,
-          data => data_out,
-          Ferr => Ferr,
-          OErr => OErr,
-          DRdy => DRdy
-        );
+    rxUnitInst : RxUnit
+      port map (
+        clk => clk,
+        reset => reset,
+        enable => enableRX,
+        read => lecture,
+        rxd => RxD,
+        data => data_out,
+        Ferr => Ferr,
+        OErr => OErr,
+        DRdy => DRdy);
 
-        ctrlUnitInst : ctrlUnit
-          port map (
-            clk => clk,
-            reset => reset,
-            rd => rd,
-            cs => cs,
-            DRdy => DRdy,
-            FErr => FErr,
-            OErr => OErr,
-            BufE => bufE,
-            RegE => regE,
-            IntR => IntR,
-            IntT => IntT,
-            ctrlReg => ctrlReg
-          );
+    ctrlUnitInst : ctrlUnit
+      port map (
+        clk => clk,
+        reset => reset,
+        rd => rd,
+        cs => cs,
+        DRdy => DRdy,
+        FErr => FErr,
+        OErr => OErr,
+        BufE => bufE,
+        RegE => regE,
+        IntR => IntR,
+        IntT => IntT,
+        ctrlReg => ctrlReg);
 
   end UARTunit_arch;
