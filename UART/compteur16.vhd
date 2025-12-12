@@ -4,18 +4,57 @@ use IEEE.numeric_std.all;
 
 entity compteur16 is
   port (
-		clk 		: in std_logic;
-		enable 	: in std_logic;
-		reset 	: in std_logic;
-		RxD 		: in std_logic;
-		tmpClk 	: out std_logic;
-		tmpRxd 	: out std_logic);
+    clk 	: in std_logic;
+    enable 	: in std_logic;
+    reset 	: in std_logic;
+    RxD 	: in std_logic;
+    tmpClk 	: out std_logic;
+    tmpRxd 	: out std_logic);
 end compteur16;
 
 architecture behavioral of compteur16 is
-	
+  
+  type t_etat is (REPOS, COMPTAGE);
+
+  signal etat : t_etat := REPOS;
+  
+  
 begin
-	
-	
-	
+  
+  process (clk, reset) is
+
+    variable compteur : natural;
+
+  begin
+
+    if (reset = '0') then
+      tmpClk <= '1';
+      etat <= REPOS;
+      compteur := 8;
+      tmpRxd <= 'U';
+
+    else if (rising_edge(clk) and enable = '1') then
+      case etat is
+        when REPOS =>
+          if (RxD = '0') then
+            etat <= COMPTAGE;
+          end if;
+
+        when COMPTAGE =>
+          compteur := compteur - 1;
+          if (compteur = 0) then
+            compteur := 8;
+            if (tmpClk = '0') then
+              tmpRxd <= RxD;
+              tmpClk <= '1';
+            else
+              tmpClk <= '0';
+            end if;
+          end if;
+      end case;
+    end if;
+
+  end
+  
+        
 end behavioral;
